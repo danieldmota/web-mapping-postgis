@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>GeoEvents</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+
+body{
+margin:0;
+display:flex;
+font-family:Arial;
+}
+
+#sidebar{
+width:300px;
+background:#111;
+color:white;
+padding:20px;
+}
+
+#map{
+flex:1;
+height:100vh;
+}
+
+button{
+width:100%;
+padding:10px;
+margin-top:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="sidebar">
+
+<h2>GeoEvents</h2>
+
+<p>Clique no mapa para criar evento</p>
+
+</div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+const map = L.map('map').setView([-20.4697,-54.6201],13);
+
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+).addTo(map);
+
+async function carregarEventos(){
+
+ const res = await fetch("http://localhost:3000/eventos")
+ const eventos = await res.json()
+
+ eventos.forEach(e => {
+
+  const geo = JSON.parse(e.geometry)
+  const coords = geo.coordinates
+
+  L.marker([coords[1],coords[0]])
+   .addTo(map)
+   .bindPopup(`<b>${e.nome}</b><br>${e.descricao}`)
+
+ })
+
+}
+
+carregarEventos()
+
+map.on("click", async (e)=>{
+
+ const nome = prompt("Nome do evento")
+ const descricao = prompt("Descrição")
+
+ if(!nome) return
+
+ await fetch("http://localhost:3000/eventos",{
+  method:"POST",
+  headers:{
+   "Content-Type":"application/json"
+  },
+  body: JSON.stringify({
+   nome,
+   descricao,
+   tipo:"geral",
+   lat:e.latlng.lat,
+   lng:e.latlng.lng
+  })
+ })
+
+ location.reload()
+
+})
+
+</script>
+
+</body>
+</html>
