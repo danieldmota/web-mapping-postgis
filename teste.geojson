@@ -1,0 +1,79 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-54.6155, -20.4697]
+      },
+      "properties": {
+        "nome": "Praça Central",
+        "tipo": "ponto_de_referencia",
+        "descricao": "Praça fictícia no centro da cidade"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-54.62, -20.462]
+      },
+      "properties": {
+        "nome": "Estação de Tratamento Norte",
+        "tipo": "estacao",
+        "descricao": "Estação fictícia de tratamento de água"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-54.605, -20.48]
+      },
+      "properties": {
+        "nome": "Reservatório Sul",
+        "tipo": "reservatorio",
+        "descricao": "Reservatório fictício de distribuição"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-54.63, -20.465],
+            [-54.625, -20.465],
+            [-54.625, -20.47],
+            [-54.63, -20.47],
+            [-54.63, -20.465]
+          ]
+        ]
+      },
+      "properties": {
+        "nome": "Área de Cobertura Oeste",
+        "tipo": "area_cobertura",
+        "descricao": "Polígono fictício representando área de cobertura"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-54.62, -20.462],
+          [-54.618, -20.466],
+          [-54.6155, -20.4697],
+          [-54.61, -20.475],
+          [-54.605, -20.48]
+        ]
+      },
+      "properties": {
+        "nome": "Rede de Distribuição Principal",
+        "tipo": "rede_distribuicao",
+        "descricao": "Linha fictícia representando tubulação principal"
+      }
+    }
+  ]
+}
