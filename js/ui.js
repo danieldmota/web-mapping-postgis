@@ -64,7 +64,13 @@ function cancelarFormulario() {
   }
 }
 
-function iniciarCriacaoLinhaOuPoligono(formVisivel, formOculto, nomeInputId, coordElementId, ativarModo) {
+function iniciarCriacaoLinhaOuPoligono(
+  formVisivel,
+  formOculto,
+  nomeInputId,
+  coordElementId,
+  ativarModo,
+) {
   ativarModo();
   esconderTodosFormularios();
   document.getElementById(formVisivel).classList.remove("hidden");
@@ -74,11 +80,23 @@ function iniciarCriacaoLinhaOuPoligono(formVisivel, formOculto, nomeInputId, coo
 }
 
 function iniciarCriacaoLinha() {
-  iniciarCriacaoLinhaOuPoligono("formCriarLinha", "formCriarPoligono", "linhaNome", "linhaCoordenadas", ativarModoDesenhoLinha);
+  iniciarCriacaoLinhaOuPoligono(
+    "formCriarLinha",
+    "formCriarPoligono",
+    "linhaNome",
+    "linhaCoordenadas",
+    ativarModoDesenhoLinha,
+  );
 }
 
 function iniciarCriacaoPoligono() {
-  iniciarCriacaoLinhaOuPoligono("formCriarPoligono", "formCriarLinha", "poligonoNome", "poligonoCoordenadas", ativarModoDesenhoPoligono);
+  iniciarCriacaoLinhaOuPoligono(
+    "formCriarPoligono",
+    "formCriarLinha",
+    "poligonoNome",
+    "poligonoCoordenadas",
+    ativarModoDesenhoPoligono,
+  );
 }
 
 async function carregarPontos() {
@@ -209,7 +227,10 @@ function editarPonto(id) {
 function formatarCoordenadasParaTexto(coordenadas) {
   if (!coordenadas || coordenadas.length === 0) return "";
   return coordenadas
-    .map(([lng, lat], idx) => `${idx + 1}: ${Number(lat).toFixed(4)}, ${Number(lng).toFixed(4)}`)
+    .map(
+      ([lng, lat], idx) =>
+        `${idx + 1}: ${Number(lat).toFixed(4)}, ${Number(lng).toFixed(4)}`,
+    )
     .join("\n");
 }
 
@@ -246,11 +267,17 @@ function mostrarFormularioEditarLinha(linha) {
   }
   if (!geometry || geometry.type !== "LineString") return;
   const coordenadas = geometry.coordinates.map((c) => [c[0], c[1]]);
-  linhaEmEdicao = { id: linha.id, nome: linha.nome, descricao: linha.descricao || "", coordenadas };
+  linhaEmEdicao = {
+    id: linha.id,
+    nome: linha.nome,
+    descricao: linha.descricao || "",
+    coordenadas,
+  };
   esconderTodosFormularios();
   document.getElementById("editLinhaNome").value = linhaEmEdicao.nome;
   document.getElementById("editLinhaDescricao").value = linhaEmEdicao.descricao;
-  document.getElementById("editLinhaCoordenadas").value = formatarCoordenadasParaTexto(linhaEmEdicao.coordenadas);
+  document.getElementById("editLinhaCoordenadas").value =
+    formatarCoordenadasParaTexto(linhaEmEdicao.coordenadas);
   document.getElementById("formEditarLinha").classList.remove("hidden");
 }
 
@@ -266,11 +293,18 @@ function mostrarFormularioEditarPoligono(poligono) {
   if (!geometry || geometry.type !== "Polygon") return;
   const ring = geometry.coordinates[0];
   const coordenadas = ring.slice(0, -1).map((c) => [c[0], c[1]]);
-  poligonoEmEdicao = { id: poligono.id, nome: poligono.nome, descricao: poligono.descricao || "", coordenadas };
+  poligonoEmEdicao = {
+    id: poligono.id,
+    nome: poligono.nome,
+    descricao: poligono.descricao || "",
+    coordenadas,
+  };
   esconderTodosFormularios();
   document.getElementById("editPoligonoNome").value = poligonoEmEdicao.nome;
-  document.getElementById("editPoligonoDescricao").value = poligonoEmEdicao.descricao;
-  document.getElementById("editPoligonoCoordenadas").value = formatarCoordenadasParaTexto(poligonoEmEdicao.coordenadas);
+  document.getElementById("editPoligonoDescricao").value =
+    poligonoEmEdicao.descricao;
+  document.getElementById("editPoligonoCoordenadas").value =
+    formatarCoordenadasParaTexto(poligonoEmEdicao.coordenadas);
   document.getElementById("formEditarPoligono").classList.remove("hidden");
 }
 
@@ -285,7 +319,9 @@ async function atualizarLinha() {
   }
   const coordenadas = parsearCoordenadasDoTexto(textoCoords);
   if (!coordenadas || coordenadas.length < 2) {
-    alert("Informe pelo menos 2 coordenadas (uma por linha). Formato: lat, lng");
+    alert(
+      "Informe pelo menos 2 coordenadas (uma por linha). Formato: lat, lng",
+    );
     return;
   }
   try {
@@ -316,7 +352,9 @@ async function atualizarPoligono() {
   }
   const coordenadas = parsearCoordenadasDoTexto(textoCoords);
   if (!coordenadas || coordenadas.length < 3) {
-    alert("Informe pelo menos 3 coordenadas (uma por linha). Formato: lat, lng");
+    alert(
+      "Informe pelo menos 3 coordenadas (uma por linha). Formato: lat, lng",
+    );
     return;
   }
   try {
@@ -343,8 +381,10 @@ function iniciarRedesenhoLinha() {
     map.removeLayer(linhas[linhaEmEdicao.id].layer);
   }
   esconderTodosFormularios();
-  document.getElementById("linhaNome").value = document.getElementById("editLinhaNome").value;
-  document.getElementById("linhaDescricao").value = document.getElementById("editLinhaDescricao").value;
+  document.getElementById("linhaNome").value =
+    document.getElementById("editLinhaNome").value;
+  document.getElementById("linhaDescricao").value =
+    document.getElementById("editLinhaDescricao").value;
   document.getElementById("formCriarLinha").classList.remove("hidden");
   ativarModoDesenhoLinha();
   pontoDesenho = linhaEmEdicao.coordenadas.map((c) => [c[0], c[1]]);
@@ -361,8 +401,11 @@ function iniciarRedesenhoPoligono() {
     map.removeLayer(poligonos[poligonoEmEdicao.id].layer);
   }
   esconderTodosFormularios();
-  document.getElementById("poligonoNome").value = document.getElementById("editPoligonoNome").value;
-  document.getElementById("poligonoDescricao").value = document.getElementById("editPoligonoDescricao").value;
+  document.getElementById("poligonoNome").value =
+    document.getElementById("editPoligonoNome").value;
+  document.getElementById("poligonoDescricao").value = document.getElementById(
+    "editPoligonoDescricao",
+  ).value;
   document.getElementById("formCriarPoligono").classList.remove("hidden");
   ativarModoDesenhoPoligono();
   pontoDesenho = poligonoEmEdicao.coordenadas.map((c) => [c[0], c[1]]);
@@ -631,7 +674,9 @@ async function salvarLinha() {
     });
 
     if (res.ok) {
-      mostrarMensagem(linhaEmEdicaoId ? "Linha atualizada!" : "Linha salva com sucesso!");
+      mostrarMensagem(
+        linhaEmEdicaoId ? "Linha atualizada!" : "Linha salva com sucesso!",
+      );
       linhaEmEdicaoId = null;
       document.getElementById("linhaNome").value = "";
       document.getElementById("linhaDescricao").value = "";
@@ -676,7 +721,11 @@ async function salvarPoligono() {
     });
 
     if (res.ok) {
-      mostrarMensagem(poligonoEmEdicaoId ? "Polígono atualizado!" : "Polígono salvo com sucesso!");
+      mostrarMensagem(
+        poligonoEmEdicaoId
+          ? "Polígono atualizado!"
+          : "Polígono salvo com sucesso!",
+      );
       poligonoEmEdicaoId = null;
       document.getElementById("poligonoNome").value = "";
       document.getElementById("poligonoDescricao").value = "";
