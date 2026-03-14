@@ -33,3 +33,6 @@ O frontend está configurado para falar com a API em `http://localhost:3000` (em
 - [Estrutura do projeto](docs/estrutura.md)
 - [API REST](docs/api.md)
 
+## Considerações finais
+
+O projeto foi iniciado em HTML e CSS para um front mais leve com foco na funcionalidade, o projeto acabou crescendo visualmente para melhor experiência do usuário, talvez teria sido melhor um framework para agilidade na produção do front kkkkkk, mas ta feito, aprendi muitas coisas novas nesse desafio, foi um assunto que gostei de estudar e desenvolver. Espero que goste do projeto!
