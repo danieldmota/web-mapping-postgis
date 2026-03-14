@@ -1,0 +1,3 @@
+carregarPontos();
+carregarLinhas();
+carregarPoligonos();

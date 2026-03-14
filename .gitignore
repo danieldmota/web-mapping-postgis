@@ -1,4 +1,7 @@
 .env
 node_modules
 mapa-qgis.qgz
-README.md
+docs/api.md
+docs/como-rodar.md
+docs/estrutura.md
+docs/visao-geral.md

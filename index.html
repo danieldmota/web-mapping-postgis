@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>GeoEvents</title>
+    <title>GeoPontos</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -20,31 +20,22 @@
     <div id="sidebar">
       <div class="sidebar-header">
         <div class="brand">
-          <h1>GeoEvents</h1>
-          <small>Mapa de eventos e geometrias</small>
+          <h1>Desafio Estagio</h1>
+          <small>Mapa de pontos e geometrias</small>
         </div>
-        <div class="status-pill">Leaflet • Local API</div>
-      </div>
-
-      <div class="section">
-        <div class="section-title">Ações rápidas</div>
-        <div class="grid-2">
-          <button class="btn btn--primary" onclick="mostrarFormularioCriar()">
-            + Novo evento
-          </button>
-          <button
-            class="btn btn--secondary"
-            onclick="mostrarFormularioImportar()"
-          >
-            Importar GeoJSON
-          </button>
-        </div>
+        <button
+          class="btn btn--secondary"
+          onclick="mostrarFormularioImportar()"
+        >
+          Importar GeoJSON
+        </button>
       </div>
 
       <div id="formImportar" class="hidden panel">
         <h3>Importar arquivo</h3>
         <p class="hint">
-          Selecione um arquivo JSON ou GeoJSON com a lista de eventos.
+          Selecione o arquivo GeoJSON na raiz do projeto com a lista de pontos
+          de exemplo.
         </p>
         <input
           type="file"
@@ -58,15 +49,15 @@
       <div class="section">
         <div class="section-title">Ferramentas de desenho</div>
         <p class="hint">
-          Escolha um modo e interaja no mapa. Duplo clique finaliza linhas e
-          polígonos.
+          Escolha um modo e interaja no mapa. Clique no mapa para adicionar
+          pontos e use o botão "Salvar" do formulário para gravar no banco.
         </p>
 
         <div class="tool-grid" style="margin-top: 10px">
           <button
             id="btnDesenhoPonto"
             class="btn tool-btn"
-            onclick="ativarModoDesenhoPonto()"
+            onclick="mostrarFormularioCriar()"
             type="button"
           >
             Ponto
@@ -74,7 +65,7 @@
           <button
             id="btnDesenhoLinha"
             class="btn tool-btn"
-            onclick="ativarModoDesenhoLinha()"
+            onclick="iniciarCriacaoLinha()"
             type="button"
           >
             Linha
@@ -82,101 +73,205 @@
           <button
             id="btnDesenhoPoligono"
             class="btn tool-btn"
-            onclick="ativarModoDesenhoPoligono()"
+            onclick="iniciarCriacaoPoligono()"
             type="button"
           >
             Polígono
           </button>
         </div>
         <div class="btn-row" style="margin-top: 10px">
-          <button
-            id="btnCancelarDesenho"
-            class="btn btn--danger hidden"
-            onclick="cancelarModoDesenho()"
-            type="button"
-          >
-            Cancelar desenho
-          </button>
+          <button id="btnCancelarDesenho" class="" type="button"></button>
         </div>
       </div>
 
       <div id="formCriar" class="hidden panel">
-        <h3>Criar novo evento</h3>
+        <h3>Criar novo ponto</h3>
         <div class="form-group">
           <label>Nome:</label>
-          <input type="text" id="nome" placeholder="Nome do evento" />
+          <input type="text" id="nome" placeholder="Nome do ponto" />
         </div>
         <div class="form-group">
           <label>Descrição:</label>
-          <textarea id="descricao" placeholder="Descrição do evento"></textarea>
+          <textarea id="descricao" placeholder="Descrição do ponto"></textarea>
         </div>
         <div class="form-group">
-          <label>Tipo:</label>
-          <select id="tipo">
-            <option value="geral">Geral</option>
-            <option value="festival">Festival</option>
-            <option value="conferencia">Conferência</option>
-            <option value="encontro">Encontro</option>
-          </select>
+          <label>Coordenadas (lat, lng):</label>
+          <textarea
+            id="pontoCoordenadas"
+            placeholder="Clique no mapa para definir o ponto"
+            readonly
+          ></textarea>
         </div>
-        <div class="form-group">
-          <label>Latitude:</label>
-          <input type="number" id="lat" placeholder="-20.4697" step="0.0001" />
-        </div>
-        <div class="form-group">
-          <label>Longitude:</label>
-          <input type="number" id="lng" placeholder="-54.6201" step="0.0001" />
-        </div>
+        <input type="hidden" id="lat" />
+        <input type="hidden" id="lng" />
         <div class="form-actions">
-          <button class="btn btn--primary" onclick="salvarEvento()">
+          <button class="btn btn--primary" onclick="salvarPonto()">
             Salvar
           </button>
-          <button class="btn" onclick="cancelarFormulario()">Cancelar</button>
+          <button class="btn" onclick="">Cancelar</button>
+        </div>
+      </div>
+
+      <div id="formCriarLinha" class="hidden panel">
+        <h3>Criar nova linha</h3>
+        <div class="form-group">
+          <label>Nome:</label>
+          <input type="text" id="linhaNome" placeholder="Nome da linha" />
+        </div>
+        <div class="form-group">
+          <label>Descrição:</label>
+          <textarea
+            id="linhaDescricao"
+            placeholder="Descrição da linha"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>Coordenadas (lat, lng):</label>
+          <textarea
+            id="linhaCoordenadas"
+            placeholder="Clique no mapa para adicionar pontos da linha"
+            readonly
+          ></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn--primary" onclick="salvarLinha()">
+            Salvar linha
+          </button>
+          <button
+            class="btn"
+            onclick="
+              cancelarModoDesenho();
+              cancelarFormulario();
+            "
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+      <div id="formCriarPoligono" class="hidden panel">
+        <h3>Criar novo polígono</h3>
+        <div class="form-group">
+          <label>Nome:</label>
+          <input type="text" id="poligonoNome" placeholder="Nome do polígono" />
+        </div>
+        <div class="form-group">
+          <label>Descrição:</label>
+          <textarea
+            id="poligonoDescricao"
+            placeholder="Descrição do polígono"
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>Coordenadas (lat, lng):</label>
+          <textarea
+            id="poligonoCoordenadas"
+            placeholder="Clique no mapa para adicionar pontos do polígono"
+            readonly
+          ></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn--primary" onclick="salvarPoligono()">
+            Salvar polígono
+          </button>
+          <button
+            class="btn"
+            onclick="
+              cancelarModoDesenho();
+              cancelarFormulario();
+            "
+          >
+            Cancelar
+          </button>
         </div>
       </div>
 
       <div id="formEditar" class="hidden panel">
-        <h3>Editar evento</h3>
+        <h3>Editar ponto</h3>
         <div class="form-group">
           <label>Nome:</label>
-          <input type="text" id="editNome" placeholder="Nome do evento" />
+          <input type="text" id="editNome" placeholder="Nome do ponto" />
         </div>
         <div class="form-group">
           <label>Descrição:</label>
           <textarea
             id="editDescricao"
-            placeholder="Descrição do evento"
+            placeholder="Descrição do ponto"
           ></textarea>
         </div>
         <div class="form-group">
-          <label>Tipo:</label>
-          <select id="editTipo">
-            <option value="geral">Geral</option>
-            <option value="festival">Festival</option>
-            <option value="conferencia">Conferência</option>
-            <option value="encontro">Encontro</option>
-          </select>
+          <label>Coordenadas (lat, lng):</label>
+          <textarea
+            id="editCoordenadas"
+            placeholder="Ex: -20.4697, -54.6201 (uma linha)"
+          ></textarea>
         </div>
         <div class="form-actions">
-          <button class="btn btn--primary" onclick="atualizarEvento()">
+          <button class="btn btn--primary" onclick="atualizarPonto()">
             Atualizar
           </button>
           <button class="btn" onclick="cancelarFormulario()">Cancelar</button>
+          <button class="btn btn--danger" onclick="deletarPontoDoForm()">Deletar</button>
+        </div>
+      </div>
+
+      <div id="formEditarLinha" class="hidden panel">
+        <h3>Editar linha</h3>
+        <div class="form-group">
+          <label>Nome:</label>
+          <input type="text" id="editLinhaNome" placeholder="Nome da linha" />
+        </div>
+        <div class="form-group">
+          <label>Descrição:</label>
+          <textarea id="editLinhaDescricao" placeholder="Descrição da linha"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Coordenadas (lat, lng) — uma por linha:</label>
+          <textarea id="editLinhaCoordenadas" placeholder="Ex: -20.4697, -54.6201"></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn--primary" onclick="atualizarLinha()">Atualizar</button>
+          <button class="btn" onclick="iniciarRedesenhoLinha()">Redesenhar geometria</button>
+          <button class="btn" onclick="cancelarFormulario()">Cancelar</button>
+          <button class="btn btn--danger" onclick="deletarLinhaDoForm()">Deletar</button>
+        </div>
+      </div>
+
+      <div id="formEditarPoligono" class="hidden panel">
+        <h3>Editar polígono</h3>
+        <div class="form-group">
+          <label>Nome:</label>
+          <input type="text" id="editPoligonoNome" placeholder="Nome do polígono" />
+        </div>
+        <div class="form-group">
+          <label>Descrição:</label>
+          <textarea id="editPoligonoDescricao" placeholder="Descrição do polígono"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Coordenadas (lat, lng) — uma por linha:</label>
+          <textarea id="editPoligonoCoordenadas" placeholder="Ex: -20.4697, -54.6201"></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn--primary" onclick="atualizarPoligono()">Atualizar</button>
+          <button class="btn" onclick="iniciarRedesenhoPoligono()">Redesenhar geometria</button>
+          <button class="btn" onclick="cancelarFormulario()">Cancelar</button>
+          <button class="btn btn--danger" onclick="deletarPoligonoDoForm()">Deletar</button>
         </div>
       </div>
 
       <div class="success" id="successMsg"></div>
 
-      <div class="section" style="margin-bottom: 18px">
-        <div class="eventos-title">Eventos</div>
-        <div id="eventosList"></div>
-      </div>
+      <!-- <div class="section" style="margin-bottom: 18px">
+        <div class="pontos-title">Pontos</div>
+        <div id="pontosList"></div>
+      </div> -->
     </div>
 
     <div id="map"></div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-    <script src="index.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

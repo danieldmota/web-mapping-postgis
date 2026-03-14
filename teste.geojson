@@ -9,7 +9,6 @@
       },
       "properties": {
         "nome": "Praça Central",
-        "tipo": "ponto_de_referencia",
         "descricao": "Praça fictícia no centro da cidade"
       }
     },
@@ -21,7 +20,6 @@
       },
       "properties": {
         "nome": "Estação de Tratamento Norte",
-        "tipo": "estacao",
         "descricao": "Estação fictícia de tratamento de água"
       }
     },
