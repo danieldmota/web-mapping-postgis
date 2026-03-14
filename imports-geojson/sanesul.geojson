@@ -1,0 +1,38 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-54.583146537674345, -20.45876505724304]
+      },
+      "properties": {
+        "nome": "Sanesul - Companhia de Saneamento",
+        "descricao": "R. Dr. Zerbini, 421 - Chácara Cachoeira, Campo Grande - MS, 79040-040"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-54.59177827252676, -20.478621131846907]
+      },
+      "properties": {
+        "nome": "Sanesul - Escritório da Empresa",
+        "descricao": "R. Estrela do Sul, 300 - Vila Vilas Boas, Campo Grande - MS, 79051-260"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-54.59169244183607, -20.47898296034404]
+      },
+      "properties": {
+        "nome": "Sanesul-Maria Cecilia - Companhia de Saneamento",
+        "descricao": "R. Estrela do Sul, 300-386 - Vila Vilas Boas, Campo Grande - MS, 79051-260"
+      }
+    }
+  ]
+}
