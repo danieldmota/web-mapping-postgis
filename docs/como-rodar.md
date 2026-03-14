@@ -40,14 +40,6 @@ Arquivo do script: **[schema.sql](../schema.sql)** na raiz do projeto. Conteúdo
 - Tabela `linhas`: `id`, `nome`, `descricao`, `geometria` (geometry LineString, SRID 4326)
 - Tabela `poligonos`: `id`, `nome`, `descricao`, `geometria` (geometry Polygon, SRID 4326)
 
-Comando (ajuste usuário e nome do banco se precisar):
-
-```bash
-psql -U postgres -d pontos_map -f schema.sql
-```
-
-Ou abra o `schema.sql` no pgAdmin e execute no banco `pontos_map`.
-
 ---
 
 ## 3. Variável de ambiente
@@ -62,13 +54,9 @@ DATABASE_URL=postgresql://USUARIO:SENHA@HOST:PORTA/NOME_DO_BANCO
 
 Exemplos:
 
-- Local, usuário `postgres`, senha `postgres`, banco `pontos_map`:
+- Local, usuário `postgres`, senha `123456`, banco `pontos_map`:
   ```
-  DATABASE_URL=postgresql://postgres:postgres@localhost:5432/pontos_map
-  ```
-- Com SSL (ex.: alguns provedores em nuvem):
-  ```
-  DATABASE_URL=postgresql://user:pass@host:5432/pontos_map?sslmode=require
+  DATABASE_URL=postgresql://postgres:123456@localhost:5432/pontos_map
   ```
 
 ### 3.2 Onde definir
@@ -76,7 +64,7 @@ Exemplos:
 Crie um arquivo **`.env`** na **raiz do projeto** (mesmo nível do `server.js`):
 
 ```env
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/pontos_map
+DATABASE_URL=postgresql://postgres:123456@localhost:5432/pontos_map
 ```
 
 ---
@@ -93,7 +81,6 @@ node server.js
 Saída esperada:
 
 - `Servidor rodando na porta 3000`
-- A URL do banco no console (por causa do `console.log` do `DATABASE_URL`)
 
 A **API fica em `http://localhost:3000`**. O frontend já está configurado para usar essa URL (em `js/map.js`: `API_URL = "http://localhost:3000"`).
 
@@ -136,5 +123,5 @@ Assim:
 Se algo falhar:
 
 - **API não inicia:** confira `DATABASE_URL`, conexão com o PostgreSQL e se o PostGIS está instalado.
-- **Mapa em branco ou erros no console:** confira se a API está no ar em `http://localhost:3000` e se você está acessando o frontend por HTTP (não por `file://`).
+- **Mapa em branco ou erros no console:** confira se a API está no ar em `http://localhost:3000` e se você está acessando o frontend por HTTP.
 - **Erro 404 nas requisições:** confirme a porta em `server.js` e o valor de `API_URL` em `js/map.js`.
