@@ -19,8 +19,8 @@ Passo a passo completo (pré-requisitos, banco, variáveis, dois terminais) est�
 Resumo:
 
 1. **Requisitos:** Node.js, PostgreSQL com PostGIS.
-2. **Banco:** criar o banco `mapa_eventos`, executar o script **`schema.sql`** (cria tabelas e extensão PostGIS).
-3. **Variável de ambiente:** criar `.env` na raiz com `DATABASE_URL=postgresql://usuario:senha@localhost:5432/mapa_eventos` (veja `.env.example`).
+2. **Banco:** criar o banco `pontos_map`, executar o script **`schema.sql`** (cria tabelas e extensão PostGIS).
+3. **Variável de ambiente:** criar `.env` na raiz com `DATABASE_URL=postgresql://usuario:senha@localhost:5432/pontos_map` (veja `.env.example`).
 4. **API:** `npm install` e `node server.js` (sobe na porta **3000**).
 5. **Frontend:** Usar um servidor estático, `npx serve . -l 5000`, e acessar **http://localhost:5000**.
 
