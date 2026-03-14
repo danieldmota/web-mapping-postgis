@@ -31,7 +31,6 @@
       },
       "properties": {
         "nome": "Reservatório Sul",
-        "tipo": "reservatorio",
         "descricao": "Reservatório fictício de distribuição"
       }
     },
@@ -51,7 +50,6 @@
       },
       "properties": {
         "nome": "Área de Cobertura Oeste",
-        "tipo": "area_cobertura",
         "descricao": "Polígono fictício representando área de cobertura"
       }
     },
@@ -69,7 +67,6 @@
       },
       "properties": {
         "nome": "Rede de Distribuição Principal",
-        "tipo": "rede_distribuicao",
         "descricao": "Linha fictícia representando tubulação principal"
       }
     }

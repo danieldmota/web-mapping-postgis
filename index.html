@@ -108,7 +108,15 @@
           <button class="btn btn--primary" onclick="salvarPonto()">
             Salvar
           </button>
-          <button class="btn" onclick="">Cancelar</button>
+          <button
+            class="btn"
+            onclick="
+              cancelarModoDesenho();
+              cancelarFormulario();
+            "
+          >
+            Cancelar
+          </button>
         </div>
       </div>
 
@@ -150,7 +158,7 @@
       </div>
 
       <div id="formCriarPoligono" class="hidden panel">
-        <h3>Criar novo polígono</h3>
+        <h3>Criar novo</h3>
         <div class="form-group">
           <label>Nome:</label>
           <input type="text" id="poligonoNome" placeholder="Nome do polígono" />
@@ -172,7 +180,7 @@
         </div>
         <div class="form-actions">
           <button class="btn btn--primary" onclick="salvarPoligono()">
-            Salvar polígono
+            Salvar
           </button>
           <button
             class="btn"
@@ -211,7 +219,9 @@
             Atualizar
           </button>
           <button class="btn" onclick="cancelarFormulario()">Cancelar</button>
-          <button class="btn btn--danger" onclick="deletarPontoDoForm()">Deletar</button>
+          <button class="btn btn--danger" onclick="deletarPontoDoForm()">
+            Deletar
+          </button>
         </div>
       </div>
 
@@ -223,17 +233,29 @@
         </div>
         <div class="form-group">
           <label>Descrição:</label>
-          <textarea id="editLinhaDescricao" placeholder="Descrição da linha"></textarea>
+          <textarea
+            id="editLinhaDescricao"
+            placeholder="Descrição da linha"
+          ></textarea>
         </div>
         <div class="form-group">
           <label>Coordenadas (lat, lng) — uma por linha:</label>
-          <textarea id="editLinhaCoordenadas" placeholder="Ex: -20.4697, -54.6201"></textarea>
+          <textarea
+            id="editLinhaCoordenadas"
+            placeholder="Ex: -20.4697, -54.6201"
+          ></textarea>
         </div>
         <div class="form-actions">
-          <button class="btn btn--primary" onclick="atualizarLinha()">Atualizar</button>
-          <button class="btn" onclick="iniciarRedesenhoLinha()">Redesenhar geometria</button>
+          <button class="btn btn--primary" onclick="atualizarLinha()">
+            Atualizar
+          </button>
+          <button class="btn" onclick="iniciarRedesenhoLinha()">
+            Redesenhar geometria
+          </button>
           <button class="btn" onclick="cancelarFormulario()">Cancelar</button>
-          <button class="btn btn--danger" onclick="deletarLinhaDoForm()">Deletar</button>
+          <button class="btn btn--danger" onclick="deletarLinhaDoForm()">
+            Deletar
+          </button>
         </div>
       </div>
 
@@ -241,21 +263,37 @@
         <h3>Editar polígono</h3>
         <div class="form-group">
           <label>Nome:</label>
-          <input type="text" id="editPoligonoNome" placeholder="Nome do polígono" />
+          <input
+            type="text"
+            id="editPoligonoNome"
+            placeholder="Nome do polígono"
+          />
         </div>
         <div class="form-group">
           <label>Descrição:</label>
-          <textarea id="editPoligonoDescricao" placeholder="Descrição do polígono"></textarea>
+          <textarea
+            id="editPoligonoDescricao"
+            placeholder="Descrição do polígono"
+          ></textarea>
         </div>
         <div class="form-group">
           <label>Coordenadas (lat, lng) — uma por linha:</label>
-          <textarea id="editPoligonoCoordenadas" placeholder="Ex: -20.4697, -54.6201"></textarea>
+          <textarea
+            id="editPoligonoCoordenadas"
+            placeholder="Ex: -20.4697, -54.6201"
+          ></textarea>
         </div>
         <div class="form-actions">
-          <button class="btn btn--primary" onclick="atualizarPoligono()">Atualizar</button>
-          <button class="btn" onclick="iniciarRedesenhoPoligono()">Redesenhar geometria</button>
+          <button class="btn btn--primary" onclick="atualizarPoligono()">
+            Atualizar
+          </button>
+          <button class="btn" onclick="iniciarRedesenhoPoligono()">
+            Redesenhar geometria
+          </button>
           <button class="btn" onclick="cancelarFormulario()">Cancelar</button>
-          <button class="btn btn--danger" onclick="deletarPoligonoDoForm()">Deletar</button>
+          <button class="btn btn--danger" onclick="deletarPoligonoDoForm()">
+            Deletar
+          </button>
         </div>
       </div>
 

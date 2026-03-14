@@ -631,7 +631,7 @@ async function salvarLinha() {
     });
 
     if (res.ok) {
-      mostrarMensagem(linhaEmEdicaoId ? "Linha atualizada!" : "📏 Linha salva com sucesso!");
+      mostrarMensagem(linhaEmEdicaoId ? "Linha atualizada!" : "Linha salva com sucesso!");
       linhaEmEdicaoId = null;
       document.getElementById("linhaNome").value = "";
       document.getElementById("linhaDescricao").value = "";
@@ -676,7 +676,7 @@ async function salvarPoligono() {
     });
 
     if (res.ok) {
-      mostrarMensagem(poligonoEmEdicaoId ? "Polígono atualizado!" : "⬠ Polígono salvo com sucesso!");
+      mostrarMensagem(poligonoEmEdicaoId ? "Polígono atualizado!" : "Polígono salvo com sucesso!");
       poligonoEmEdicaoId = null;
       document.getElementById("poligonoNome").value = "";
       document.getElementById("poligonoDescricao").value = "";
