@@ -220,6 +220,20 @@ body {
     0 16px 45px rgba(102, 227, 255, 0.09);
 }
 
+.btn--ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted-1);
+  padding-inline: 6px;
+  font-size: 11px;
+  width: 50%;
+}
+
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+
 .hint {
   margin: 0;
   font-size: 12px;
@@ -303,8 +317,9 @@ input[type="file"] {
 }
 
 .btn-row {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
 }
 

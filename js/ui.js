@@ -64,6 +64,31 @@ function cancelarFormulario() {
   }
 }
 
+function filtrarLista(tipo) {
+  let features = [];
+
+  if (tipo === "pontos" || tipo === "todos") {
+    features = features.concat(pontosParaFeaturesLista());
+  }
+  if (tipo === "linhas" || tipo === "todos") {
+    features = features.concat(linhasParaFeaturesLista());
+  }
+  if (tipo === "poligonos" || tipo === "todos") {
+    features = features.concat(poligonosParaFeaturesLista());
+  }
+
+  atualizarLista(features);
+}
+
+function alternarLista() {
+  const wrapper = document.getElementById("listaWrapper");
+  const btn = document.getElementById("btnToggleLista");
+  if (!wrapper || !btn) return;
+
+  const estaOculto = wrapper.classList.toggle("hidden");
+  btn.textContent = estaOculto ? "Mostrar" : "Ocultar";
+}
+
 function iniciarCriacaoLinhaOuPoligono(
   formVisivel,
   formOculto,
@@ -154,15 +179,80 @@ async function carregarPontos() {
         });
       },
     }).addTo(map);
-
-    atualizarLista(data.features);
   } catch (error) {
     console.error("Erro ao carregar pontos:", error);
   }
 }
 
+function pontosParaFeaturesLista() {
+  if (!Array.isArray(colecaoPontos)) return [];
+  return colecaoPontos.map((f) => ({
+    ...f,
+    properties: {
+      ...(f.properties || {}),
+      tipo: "ponto",
+    },
+  }));
+}
+
+function linhasParaFeaturesLista() {
+  return Object.values(linhas)
+    .map((item) => {
+      const linha = item.data;
+      if (!linha) return null;
+      let geometry = linha.geometry;
+      if (typeof geometry === "string") {
+        try {
+          geometry = JSON.parse(geometry);
+        } catch (e) {
+          return null;
+        }
+      }
+      if (!geometry || geometry.type !== "LineString") return null;
+      return {
+        type: "Feature",
+        geometry,
+        properties: {
+          id: linha.id,
+          nome: linha.nome,
+          descricao: linha.descricao || "",
+          tipo: "linha",
+        },
+      };
+    })
+    .filter(Boolean);
+}
+
+function poligonosParaFeaturesLista() {
+  return Object.values(poligonos)
+    .map((item) => {
+      const poligono = item.data;
+      if (!poligono) return null;
+      let geometry = poligono.geometry;
+      if (typeof geometry === "string") {
+        try {
+          geometry = JSON.parse(geometry);
+        } catch (e) {
+          return null;
+        }
+      }
+      if (!geometry || geometry.type !== "Polygon") return null;
+      return {
+        type: "Feature",
+        geometry,
+        properties: {
+          id: poligono.id,
+          nome: poligono.nome,
+          descricao: poligono.descricao || "",
+          tipo: "poligono",
+        },
+      };
+    })
+    .filter(Boolean);
+}
+
 function atualizarLista(features) {
-  const lista = document.getElementById("pontosList");
+  const lista = document.getElementById("listaElementos");
   lista.innerHTML = "";
 
   if (!features || features.length === 0) {
@@ -172,29 +262,63 @@ function atualizarLista(features) {
   }
 
   features.forEach((feature) => {
-    const props = feature.properties;
-    const geo = feature.geometry;
+    const props = feature.properties || {};
+    const geo = feature.geometry || {};
 
     let coordsText = "";
-
     if (geo.type === "Point") {
       const [lng, lat] = geo.coordinates;
       coordsText = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
-    } else {
+    } else if (geo.type === "LineString" || geo.type === "Polygon") {
       coordsText = geo.type;
+    } else {
+      coordsText = geo.type || "";
     }
+
+    let tipo = props.tipo;
+    if (!tipo) {
+      if (geo.type === "Point") tipo = "ponto";
+      else if (geo.type === "LineString") tipo = "linha";
+      else if (geo.type === "Polygon") tipo = "poligono";
+    }
+
+    let acoesHtml = "";
+    if (tipo === "ponto") {
+      acoesHtml = `
+        <button class="edit" onclick="editarPonto(${props.id})">Editar</button>
+        <button class="delete" onclick="deletarPonto(${props.id})">Deletar</button>
+      `;
+    } else if (tipo === "linha") {
+      acoesHtml = `
+        <button class="edit" onclick="editarLinha(${props.id})">Editar</button>
+        <button class="delete" onclick="deletarLinha(${props.id})">Deletar</button>
+      `;
+    } else if (tipo === "poligono") {
+      acoesHtml = `
+        <button class="edit" onclick="editarPoligono(${props.id})">Editar</button>
+        <button class="delete" onclick="deletarPoligono(${props.id})">Deletar</button>
+      `;
+    }
+
+    const labelTipo =
+      tipo === "ponto"
+        ? "Ponto"
+        : tipo === "linha"
+          ? "Linha"
+          : tipo === "poligono"
+            ? "Polígono"
+            : "";
 
     const item = document.createElement("div");
     item.className = "ponto-item";
 
     item.innerHTML = `
-      <h4>${props.nome}</h4>
+      <h4>${props.nome}${labelTipo ? ` <span style="font-size:11px;color:#888;">(${labelTipo})</span>` : ""}</h4>
       <p>${props.descricao || "Sem descrição"}</p>
       <p style="font-size:11px;">${coordsText}</p>
 
       <div class="ponto-actions">
-        <button class="edit" onclick="editarPonto(${props.id})">Editar</button>
-        <button class="delete" onclick="deletarPonto(${props.id})">Deletar</button>
+        ${acoesHtml}
       </div>
     `;
 
@@ -222,6 +346,18 @@ function editarPonto(id) {
 
   pontoEmEdicao = feature;
   mostrarFormularioEditar(feature);
+}
+
+function editarLinha(id) {
+  const item = linhas[id];
+  if (!item || !item.data) return;
+  mostrarFormularioEditarLinha(item.data);
+}
+
+function editarPoligono(id) {
+  const item = poligonos[id];
+  if (!item || !item.data) return;
+  mostrarFormularioEditarPoligono(item.data);
 }
 
 function formatarCoordenadasParaTexto(coordenadas) {
