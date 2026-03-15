@@ -26,9 +26,9 @@ Resumo:
 
 O frontend está configurado para falar com a API em `http://localhost:3000` (em `js/map.js`).
 
-## Adicionar pontos da sanesul
+## Importar pontos da sanesul
 
-Tem um arquivo geojson em /imports-geojson/sanesul.geojson, onde nele estará os pontos com coordenadas da sanesul de Campo Grande.
+Tem um arquivo geojson em /imports-geojson/sanesul.geojson, onde nele estará os pontos com coordenadas da sanesul de Campo Grande, para importar e enviar ao banco de dados, passando a ser exibido no mapa.
 
 ## Documentação
 
